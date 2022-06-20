@@ -2,33 +2,34 @@
 // função que determina pra onde o objeto irá se movimentar.
 function leDoTeclado(evento) {
 
-    if(evento.keyCode == cima && y - taxa > 0) {
-        y ++;
+    if(evento.keyCode == cima && cauda[0][1] - taxa > 0) {
+        cauda[0][1] ++;
 
         //velocidade caso apertar uma direção, no caso a posição y vai receber -1
         velox = 0;
-        veloy = -1;
+        veloy = -2;
 
 
-    } else if (evento.keyCode == baixo && y + taxa < 500) {
-        y ++;
+    } else if (evento.keyCode == baixo && cauda[0][1] + taxa < 500) {
+        cauda[0][1] ++;
         velox = 0;
-        veloy = 1;
+        veloy = 2;
         
 
-    } else if (evento.keyCode == esquerda && x - taxa > 0) {
-        x ++;
-        velox = -1;
+    } else if (evento.keyCode == esquerda && cauda[0][0] - taxa > 0) {
+        cauda[0][0] ++;
+        velox = -2;
         veloy = 0;
         
 
-    } else if (evento.keyCode == direita && x + taxa < 500) {
-        x ++;
-        velox = 1;
+    } else if (evento.keyCode == direita && cauda[0][0] + taxa < 500) {
+        cauda[0][0] ++;
+        velox = 2;
         veloy = 0;
     }
 }
 
+/*
 // função que cria o objeto.
 function desenhaCirculo(x, y, raio) {
 
@@ -36,12 +37,20 @@ function desenhaCirculo(x, y, raio) {
     pincel.beginPath();
     pincel.arc(x, y, raio, 0, 2 * Math.PI);
     pincel.fill();
-}
+}*/
 
 // função que cria a cauda
-function desenhaCauda(xc, yc, raioc) {
+function desenhaCauda(cauda, raio) {
+    for (var i=0; i < cauda.length; i ++){
+        pincel.fillStyle = 'black';
+        pincel.beginPath();
+        pincel.arc(cauda[i][0], cauda[i][1], raio, 0, 2 * Math.PI); // cauda[i][0] referencia a posição x dentro do elemento da cauda [i]
+        pincel.fill();
+        console.log(cauda[i]);
+        
+    }
     
-
+    
     
         
 }
@@ -75,65 +84,53 @@ function desenhaMaca(xm, ym, raiom) {
 
     // função para atualizar a tela, desenhando o grid e o objeto.
     function atualizaTela() {
-        x += velox; //cada intervalo, ele movimenta o x a velox, que foi definido no teclado
-        y += veloy; //mesma coisa com o y, no caso se for -1, ele vai ficar somando -1 a cada intervalo
+        cauda[0][0] += velox; //cada intervalo, ele movimenta o x a velox, que foi definido no teclado
+        cauda[0][1] += veloy; //mesma coisa com o y, no caso se for -1, ele vai ficar somando -1 a cada intervalo
 
         
         limpaTela();
-        //desenhaCauda(xc, yc, 8); 
+        desenhaCauda(cauda, 10);
         
-        
-        desenhaCirculo(x, y, 10);
         desenhaMaca(xm, ym, 5);
 
+        
 
         //condições para fazer a cobra aparecer no outro lado da tela
-        if(x < 0){
-            x = tabela; 
+        if(cauda[0][0] < 0){
+            cauda[0][0] = tabela; 
             // caso a cobra for na extremidade do lado esquerdo(0), ela ganhara o valor da tabela(400)
         }
-        if(x > tabela){
-            x = 0;
+        if(cauda[0][0] > tabela){
+            cauda[0][0] = 0;
         }
-        if(y < 0){
-            y = tabela;
+        if(cauda[0][1] < 0){
+            cauda[0][1] = tabela;
         }
-        if(y > tabela){
-            y = 0;
+        if(cauda[0][1] > tabela){
+            cauda[0][1] = 0;
         }
 
         //condição para comer a maçã, sendo impossivel atingir a posição exata, foi feito um valor aproximado
         //valor aproximado: um raio de 15 ao redor da posição da maçã
-        if(x >= xm-15 && x <= xm+15 && y >= ym-15 && y <= ym+15){
-            tam_cauda++;
+        if(cauda[0][0] >= xm-15 && cauda[0][0] <= xm+15 && cauda[0][1] >= ym-15 && cauda[0][1] <= ym+15){
             xm = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
             ym = Math.floor(Math.random() * tabela);
-            }
-        
-
-        for (var i=1; i < cauda.lenght; i ++){
-            pincel.fillStyle = 'black';
-            pincel.beginPath();
-            pincel.arc(cauda[i].xc, cauda[i].yc, raio, 0, 2 * Math.PI);
-            pincel.fill();
-            cauda[i].xc = x;
-            cauda[i].yc = y;
-            
         }
-        snake.push({xc: x, yc: y});
-        while(cauda.length > tam_cauda){
-            cauda.shift();
-            }
+       
+        for (var p= 3; p > cauda.length; p --){
         
+            cauda[p].unshift(cauda[p-1]);
+            cauda[p].pop();
+            
+           
+        }
+
     }
 
 
 var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
     var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
     
-    // Váriavel que define a posição do objeto.
-    var x = 12.5;       
-    var y = 12.5;
 
     // Váriavel que define a posição inicial da maçã.
     var xm = 200;
@@ -147,10 +144,10 @@ var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
     tabela = 400;
 
     // Vetor para construir a cauda .
-    cauda = [];
+    cauda = [[62.5,12.5],[37.5,12.5] ,[12.5,12.5] ];
 
     // Váriavel que define o tamanho inicial da cauda
-    tam_cauda = 5
+    //cauda.lengh = 2;
 
     // códigos do teclado
     var esquerda = 37
@@ -163,6 +160,6 @@ var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
 
 
     // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
-    setInterval(atualizaTela, 9);
+    setInterval(atualizaTela, 20);
 
    document.onkeydown = leDoTeclado; //atribuição de método, quando clicar no teclado, executa a função
