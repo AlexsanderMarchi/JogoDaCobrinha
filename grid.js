@@ -48,11 +48,7 @@ function desenhaCauda(cauda, raio) {
         pincel.fill();
         console.log(cauda[i]);
         
-    }
-    
-    
-    
-        
+    }      
 }
 
 
@@ -90,10 +86,18 @@ function desenhaMaca(xm, ym, raiom) {
         
         limpaTela();
         desenhaCauda(cauda, 10);
-        
-        desenhaMaca(xm, ym, 5);
 
+        /*cauda.push(cauda[cauda.length][0]=cauda[0][0], cauda[cauda.length][1]=cauda[0][1]);
         
+        while (cauda.length > cauda){
+            cauda.shift();
+        }*/
+       
+
+        desenhaMaca(xm, ym, 5);
+        
+       
+
 
         //condições para fazer a cobra aparecer no outro lado da tela
         if(cauda[0][0] < 0){
@@ -117,14 +121,8 @@ function desenhaMaca(xm, ym, raiom) {
             ym = Math.floor(Math.random() * tabela);
         }
        
-        for (var p= 3; p > cauda.length; p --){
         
-            cauda[p].unshift(cauda[p-1]);
-            cauda[p].pop();
-            
-           
-        }
-
+        
     }
 
 
