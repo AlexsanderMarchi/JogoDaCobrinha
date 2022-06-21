@@ -41,10 +41,16 @@ function desenhaCirculo(x, y, raio) {
 // função que cria a cauda
 function desenhaCauda(xc, yc, raioc) {
     
+    pincel.fillStyle = 'black';
+    pincel.beginPath();
+    pincel.arc(xc, yc, raioc, 0, 2 * Math.PI);
+    pincel.fill();
+}
+    
 
     
         
-}
+
 
 
 // função que cria a maca
@@ -118,6 +124,8 @@ function desenhaMaca(xm, ym, raiom) {
             pincel.fill();
             cauda[i].xc = x;
             cauda[i].yc = y;
+
+            
             
         }
         snake.push({xc: x, yc: y});
@@ -140,17 +148,17 @@ var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
     var ym = 200;
 
     // Váriavel que define a velocidade incial da cobra, que no caso parada.
-    velox = 0;
-    veloy = 0;
+    var velox = 0;
+    var veloy = 0;
     
     // Váriavel com o valor total da tabela
-    tabela = 400;
+    var tabela = 400;
 
     // Vetor para construir a cauda .
-    cauda = [];
+    var cauda = [];
 
     // Váriavel que define o tamanho inicial da cauda
-    tam_cauda = 5
+  var  tam_cauda = 5
 
     // códigos do teclado
     var esquerda = 37
