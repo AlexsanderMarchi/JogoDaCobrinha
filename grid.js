@@ -42,7 +42,16 @@ function desenhaCirculo(x, y, raio) {
 // função que cria a cauda
 function desenhaCauda(cauda, raio) {
     for (var i=0; i < cauda.length; i ++){
-        pincel.fillStyle = 'black';
+
+        //para mudar a cor da cobra de vermelho e preto, no caso se o vetor i for impar, vai ser vermelho
+        // e se caso o vetor i for par, vai ser preto
+        if(i%2==0){
+            pincel.fillStyle = 'black'; 
+        }
+        if(i%2==1){
+            pincel.fillStyle = 'red'; 
+        }
+
         pincel.beginPath();
         pincel.arc(cauda[i][0], cauda[i][1], raio, 0, 2 * Math.PI); // cauda[i][0] referencia a posição x dentro do elemento da cauda [i]
         pincel.fill();
@@ -67,7 +76,7 @@ function desenhaMaca(xm, ym, raiom) {
         var descer = 0; 
         while(descer <=400){
             for(var imp= 0; imp<=400;imp=imp+25){
-                pincel.fillStyle = "green";
+                pincel.fillStyle = "lightblue";
                 pincel.beginPath();
                 pincel.rect(imp, descer, 25, 25);
                 pincel.closePath();

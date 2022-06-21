@@ -1,0 +1,16 @@
+body {
+    height: 95vh;
+    width: 95vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:#0e4af080;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+}
+
+canvas {
+    margin-bottom: 50px;
+}
+
