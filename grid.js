@@ -2,18 +2,18 @@
 // função que determina pra onde o objeto irá se movimentar.
 function leDoTeclado(evento) {
 
-    if(evento.keyCode == cima && y - taxa > 0) {
-        y ++;
+    if(evento.keyCode == cima && cauda[0][1] - taxa > 0) {
+        cauda[0][1] ++;
 
         //velocidade caso apertar uma direção, no caso a posição y vai receber -1
         velox = 0;
-        veloy = -1;
+        veloy = -2;
 
 
-    } else if (evento.keyCode == baixo && y + taxa < 500) {
-        y ++;
+    } else if (evento.keyCode == baixo && cauda[0][1] + taxa < 500) {
+        cauda[0][1] ++;
         velox = 0;
-        veloy = 1;
+        veloy = 2;
         
 
     } else if (evento.keyCode == esquerda && cauda[0][0] - taxa > 0) {
@@ -22,9 +22,9 @@ function leDoTeclado(evento) {
         veloy = 0;
         
 
-    } else if (evento.keyCode == direita && x + taxa < 500) {
-        x ++;
-        velox = 1;
+    } else if (evento.keyCode == direita && cauda[0][0] + taxa < 500) {
+        cauda[0][0] ++;
+        velox = 2;
         veloy = 0;
     }
 }
@@ -37,12 +37,29 @@ function desenhaCirculo(x, y, raio) {
     pincel.beginPath();
     pincel.arc(x, y, raio, 0, 2 * Math.PI);
     pincel.fill();
-}
+}*/
 
 // função que cria a cauda
-function desenhaCauda(xc, yc, raioc) {
-    
+function desenhaCauda(cauda, raio) {
+    for (var i=0; i < cauda.length; i ++){
 
+        //para mudar a cor da cobra de vermelho e preto, no caso se o vetor i for impar, vai ser vermelho
+        // e se caso o vetor i for par, vai ser preto
+        if(i%2==0){
+            pincel.fillStyle = 'black'; 
+        }
+        if(i%2==1){
+            pincel.fillStyle = 'red'; 
+        }
+
+        pincel.beginPath();
+        pincel.arc(cauda[i][0], cauda[i][1], raio, 0, 2 * Math.PI); // cauda[i][0] referencia a posição x dentro do elemento da cauda [i]
+        pincel.fill();
+        console.log(cauda[i]);
+        
+    }
+    
+    
     
         
 }
@@ -63,7 +80,7 @@ function desenhaMaca(xm, ym, raiom) {
         var descer = 0; 
         while(descer <=400){
             for(var imp= 0; imp<=400;imp=imp+25){
-                pincel.fillStyle = "green";
+                pincel.fillStyle = "lightblue";
                 pincel.beginPath();
                 pincel.rect(imp, descer, 25, 25);
                 pincel.closePath();
@@ -76,16 +93,16 @@ function desenhaMaca(xm, ym, raiom) {
 
     // função para atualizar a tela, desenhando o grid e o objeto.
     function atualizaTela() {
-        x += velox; //cada intervalo, ele movimenta o x a velox, que foi definido no teclado
-        y += veloy; //mesma coisa com o y, no caso se for -1, ele vai ficar somando -1 a cada intervalo
+        cauda[0][0] += velox; //cada intervalo, ele movimenta o x a velox, que foi definido no teclado
+        cauda[0][1] += veloy; //mesma coisa com o y, no caso se for -1, ele vai ficar somando -1 a cada intervalo
 
         
         limpaTela();
-        //desenhaCauda(xc, yc, 8); 
+        desenhaCauda(cauda, 10);
         
         desenhaMaca(xm, ym, 5);
 
-
+        
 
         //condições para fazer a cobra aparecer no outro lado da tela
         if(cauda[0][0] < 0){
@@ -107,21 +124,6 @@ function desenhaMaca(xm, ym, raiom) {
         if(cauda[0][0] >= xm-15 && cauda[0][0] <= xm+15 && cauda[0][1] >= ym-15 && cauda[0][1] <= ym+15){
             xm = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
             ym = Math.floor(Math.random() * tabela);
-
-            }
-        
-
-        for (var i=1; i < cauda.lenght; i ++){
-            pincel.fillStyle = 'black';
-            pincel.beginPath();
-            pincel.arc(cauda[i].xc, cauda[i].yc, raio, 0, 2 * Math.PI);
-            pincel.fill();
-            cauda[i].xc = x;
-            cauda[i].yc = y;
-
-            
-            
-
         }
        
         for (var p= 3; p > cauda.length; p --){
@@ -148,13 +150,9 @@ var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
     veloy = 0;
     
     // Váriavel com o valor total da tabela
-    var tabela = 400;
+    tabela = 400;
 
     // Vetor para construir a cauda .
-    var cauda = [];
-
-    // Váriavel que define o tamanho inicial da cauda
-  var  tam_cauda = 5
     cauda = [[62.5,12.5],[37.5,12.5] ,[12.5,12.5] ];
 
     // Váriavel que define o tamanho inicial da cauda
