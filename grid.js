@@ -25,25 +25,25 @@ function deslocarCauda(){
 
     //se a cobra estiver se deslocando para direita:
     if (sentidoAtual === direita) {
-        cauda.unshift([cauda[0][0]+25,cauda[0][1]]);
+        cauda.unshift([cauda[0][0]+15,cauda[0][1]]);
         cauda.pop();
     }
     
     //se a cobra estiver se deslocando para esquerda:
     if (sentidoAtual === esquerda) {
-        cauda.unshift([cauda[0][0]-25,cauda[0][1]]);
+        cauda.unshift([cauda[0][0]-15,cauda[0][1]]);
         cauda.pop();
     }
 
     //se a cobra estiver se deslocando para cima:
     if (sentidoAtual === cima) {
-        cauda.unshift([cauda[0][0],cauda[0][1]-25]);
+        cauda.unshift([cauda[0][0],cauda[0][1]-15]);
         cauda.pop();
     }
 
     //se a cobra estiver se deslocando para baixo:
     if (sentidoAtual === baixo) {
-        cauda.unshift([cauda[0][0],cauda[0][1]+25]);
+        cauda.unshift([cauda[0][0],cauda[0][1]+15]);
         cauda.pop();
     }
     
@@ -157,6 +157,18 @@ function gameOver(){
         */
         if(cauda[0][0] >= xm-15 && cauda[0][0] <= xm+15 && cauda[0][1] >= ym-15 && cauda[0][1] <= ym+15){
             cauda.length += 1;
+            if(pontos<100){
+                pontos+=10;
+            }
+            if(pontos>=30 && pontos<300){
+                pontos+=20;
+            }
+            if(pontos>=300 && pontos<800){
+                pontos+=50;
+            }
+            if(pontos === 800){
+                alert("Você ganhou")
+            }
             xm = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
             ym = Math.floor(Math.random() * tabela);
 
@@ -190,6 +202,9 @@ var tela = document.querySelector('canvas');    // Váriavel que seleciona a tel
     //sentido da cobrinha:
     var sentidoAtual;
 
+    //Pontuação
+    var pontos = 0;
+
     // códigos do teclado
     var esquerda = 37
     var cima = 38
@@ -202,6 +217,6 @@ var tela = document.querySelector('canvas');    // Váriavel que seleciona a tel
 
 
     // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
-    setInterval(atualizaTela, 200);
+    setInterval(atualizaTela, 60);
 
    document.onkeydown = leDoTeclado; //atribuição de método, quando clicar no teclado, executa a função
