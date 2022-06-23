@@ -159,6 +159,8 @@ function gameOver(){
             cauda.length += 1;
             xm = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
             ym = Math.floor(Math.random() * tabela);
+
+            document.getElementById("points").innerHTML = "Pontuação: " + points++;
         }
        
         
@@ -193,6 +195,10 @@ var tela = document.querySelector('canvas');    // Váriavel que seleciona a tel
     var cima = 38
     var direita = 39
     var baixo = 40
+
+    var points = 10
+
+    
 
 
     // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
