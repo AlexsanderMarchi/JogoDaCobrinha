@@ -10,7 +10,39 @@ body {
     font-family: 'Press Start 2P', cursive;
 }
 
+#titulo{
+    font-family: 'Bebas Neue', Fantasy;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: #f6f5fc;
+}
+
 canvas {
     margin-bottom: 50px;
 }
 
+.footer-col{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.footer-col .socials a{
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-color: rgb(40, 15, 48);
+    margin: 0 10px 10px 0;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.footer-col .socials a:hover{
+    color: rgb(255, 255, 255);
+    background-color: #915283;
+}
