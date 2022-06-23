@@ -1,50 +1,65 @@
 
-// função que determina pra onde o objeto irá se movimentar.
+//Função que usa o teclado para determinar em qual direção o objeto irá se movimentar.
 function leDoTeclado(evento) {
+    
 
-    if(evento.keyCode == cima && cauda[0][1] - taxa > 0) {
-        cauda[0][1] ++;
-
-        //velocidade caso apertar uma direção, no caso a posição y vai receber -1
-        velox = 0;
-        veloy = -2;
+    if(evento.keyCode === cima) {
+        sentidoAtual = cima;
 
 
-    } else if (evento.keyCode == baixo && cauda[0][1] + taxa < 500) {
-        cauda[0][1] ++;
-        velox = 0;
-        veloy = 2;
+    } else if (evento.keyCode === baixo) {
+        sentidoAtual = baixo;
         
 
-    } else if (evento.keyCode == esquerda && cauda[0][0] - taxa > 0) {
-        cauda[0][0] ++;
-        velox = -2;
-        veloy = 0;
+    } else if (evento.keyCode === esquerda) {
+        sentidoAtual = esquerda;
         
 
-    } else if (evento.keyCode == direita && cauda[0][0] + taxa < 500) {
-        cauda[0][0] ++;
-        velox = 2;
-        veloy = 0;
+    } else if (evento.keyCode === direita) {
+        sentidoAtual = direita;
     }
 }
 
-/*
-// função que cria o objeto.
-function desenhaCirculo(x, y, raio) {
+//Função para fazer a cauda seguir a cabeça da cobra.
+function deslocarCauda(){
 
-    pincel.fillStyle = 'black';
-    pincel.beginPath();
-    pincel.arc(x, y, raio, 0, 2 * Math.PI);
-    pincel.fill();
-}*/
+    //se a cobra estiver se deslocando para direita:
+    if (sentidoAtual === direita) {
+        cauda.unshift([cauda[0][0]+25,cauda[0][1]]);
+        cauda.pop();
+    }
+    
+    //se a cobra estiver se deslocando para esquerda:
+    if (sentidoAtual === esquerda) {
+        cauda.unshift([cauda[0][0]-25,cauda[0][1]]);
+        cauda.pop();
+    }
 
-// função que cria a cauda
+    //se a cobra estiver se deslocando para cima:
+    if (sentidoAtual === cima) {
+        cauda.unshift([cauda[0][0],cauda[0][1]-25]);
+        cauda.pop();
+    }
+
+    //se a cobra estiver se deslocando para baixo:
+    if (sentidoAtual === baixo) {
+        cauda.unshift([cauda[0][0],cauda[0][1]+25]);
+        cauda.pop();
+    }
+    
+
+
+}
+// função para criar a cauda
 function desenhaCauda(cauda, raio) {
     for (var i=0; i < cauda.length; i ++){
 
-        //para mudar a cor da cobra de vermelho e preto, no caso se o vetor i for impar, vai ser vermelho
-        // e se caso o vetor i for par, vai ser preto
+        /*
+        Condição para mudar a cor da cobra de vermelho e preto, 
+        semelhante a uma coral. No caso se o vetor i for impar, 
+        vai ser vermelho e se caso o vetor i for par, vai ser preto.
+         */
+
         if(i%2==0){
             pincel.fillStyle = 'black'; 
         }
@@ -52,80 +67,96 @@ function desenhaCauda(cauda, raio) {
             pincel.fillStyle = 'red'; 
         }
 
+        //Formato da cobra.
         pincel.beginPath();
         pincel.arc(cauda[i][0], cauda[i][1], raio, 0, 2 * Math.PI); // cauda[i][0] referencia a posição x dentro do elemento da cauda [i]
         pincel.fill();
-        console.log(cauda[i]);
+        
         
     }      
 }
 
 
-// função que cria a maca
+// função que cria a maçã verde.
 function desenhaMaca(xm, ym, raiom) {
 
-    pincel.fillStyle = 'red';
+    pincel.fillStyle = 'green';
     pincel.beginPath();
     pincel.arc(xm, ym, raiom, 0, 2 * Math.PI);
     pincel.fill();
 }
 
 
-    // função que desenha o grid.
-    function limpaTela() {
-        var descer = 0; 
-        while(descer <=400){
-            for(var imp= 0; imp<=400;imp=imp+25){
-                pincel.fillStyle = "lightblue";
-                pincel.beginPath();
-                pincel.rect(imp, descer, 25, 25);
-                pincel.closePath();
-                pincel.fill();
-                     
-            }
-            descer = descer + 25; 
-        }    
-    }
+// função que desenha o grid.
+function limpaTela() {
+    var descer = 0; 
+    while(descer <=400){
+        for(var imp= 0; imp<=400;imp=imp+25){
+            pincel.fillStyle = "lightblue";
+            pincel.beginPath();
+            pincel.rect(imp, descer, 25, 25);
+            pincel.closePath();
+            pincel.fill();
+                    
+        }
+        descer = descer + 25; 
+    }    
+}
+
+
+//Função para finalizar o jogo, e reiniciar do zero.
+function gameOver(){
+    alert("Game Over");                 //Mensagem de game over.
+    cauda = [[62.5,12.5],[] ,[] ];      //posição e tamanho inicial da cobra.
+    sentidoAtual = direita;             //Sentido inicial da cobra sendo para a direita.
+}
 
     // função para atualizar a tela, desenhando o grid e o objeto.
     function atualizaTela() {
-        cauda[0][0] += velox; //cada intervalo, ele movimenta o x a velox, que foi definido no teclado
-        cauda[0][1] += veloy; //mesma coisa com o y, no caso se for -1, ele vai ficar somando -1 a cada intervalo
 
+
+        limpaTela();                    //Função que desenha a tabela a cada intervalo.
+    
+        deslocarCauda();                //Função para sempre ver o sentido da cobra.
+
+        desenhaCauda(cauda, 10);        //Função para desenhar o tamanho da cobra.
         
-        limpaTela();
-        desenhaCauda(cauda, 10);
-
-        /*cauda.push(cauda[cauda.length][0]=cauda[0][0], cauda[cauda.length][1]=cauda[0][1]);
-        
-        while (cauda.length > cauda){
-            cauda.shift();
-        }*/
-       
-
-        desenhaMaca(xm, ym, 5);
+        desenhaMaca(xm, ym, 5);         //Função para criar a maçã verde.
         
        
 
 
-        //condições para fazer a cobra aparecer no outro lado da tela
+        //condições para caso a cobra bater na parede, reiniciar o jogo.
         if(cauda[0][0] < 0){
-            cauda[0][0] = tabela; 
-            // caso a cobra for na extremidade do lado esquerdo(0), ela ganhara o valor da tabela(400)
+            gameOver();
         }
         if(cauda[0][0] > tabela){
-            cauda[0][0] = 0;
+            gameOver();
         }
         if(cauda[0][1] < 0){
-            cauda[0][1] = tabela;
+            gameOver();
         }
         if(cauda[0][1] > tabela){
-            cauda[0][1] = 0;
+            gameOver();
         }
 
-        //condição para comer a maçã, sendo impossivel atingir a posição exata, foi feito um valor aproximado
-        //valor aproximado: um raio de 15 ao redor da posição da maçã
+
+        //Repetição caso o jogador encoste no próprio rabo.
+        for(var i = 1; i<cauda.length; i++){
+            if(cauda[0][0] === cauda[i][0] && cauda[0][0] === cauda[i][0] &&  
+                cauda[0][1] === cauda[i][1] && cauda[0][1] === cauda[i][1]){
+                    gameOver();
+                }
+            
+        }
+
+        /*
+        Condição para comer a maçã, sendo impossivel atingir a posição exata, 
+        foi feito um valor aproximado do valor aproximado: um raio de 15 ao redor 
+        da posição da maçã.
+        */
         if(cauda[0][0] >= xm-15 && cauda[0][0] <= xm+15 && cauda[0][1] >= ym-15 && cauda[0][1] <= ym+15){
+            cauda.length += 1;
             xm = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
             ym = Math.floor(Math.random() * tabela);
         }
@@ -135,26 +166,27 @@ function desenhaMaca(xm, ym, raiom) {
     }
 
 
-var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
-    var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
+
+
+
+
+//Jogo onde é declarado as variáveis e chamadas as funções.
+var tela = document.querySelector('canvas');    // Váriavel que seleciona a tela.
+    var pincel = tela.getContext('2d');         // Váriavel usada para pintar na tela.
     
 
-    // Váriavel que define a posição inicial da maçã.
+    // Váriaveis que define a posição inicial da maçã verde.
     var xm = 200;
     var ym = 200;
-
-    // Váriavel que define a velocidade incial da cobra, que no caso parada.
-    velox = 0;
-    veloy = 0;
     
     // Váriavel com o valor total da tabela
-    tabela = 400;
+    var tabela = 400;
 
-    // Vetor para construir a cauda .
-    cauda = [[62.5,12.5],[37.5,12.5] ,[12.5,12.5] ];
+    // Vetor para construir a cauda, sendo a primeira posição a cabeça e a ultima o final da cauda.
+    var cauda = [[62.5,12.5],[] ,[] ];
 
-    // Váriavel que define o tamanho inicial da cauda
-    //cauda.lengh = 2;
+    //sentido da cobrinha:
+    var sentidoAtual;
 
     // códigos do teclado
     var esquerda = 37
@@ -162,11 +194,8 @@ var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
     var direita = 39
     var baixo = 40
 
-    // Quantidade de pixel que o objeto se movimenta.
-    var taxa = 25;
-
 
     // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
-    setInterval(atualizaTela, 20);
+    setInterval(atualizaTela, 200);
 
    document.onkeydown = leDoTeclado; //atribuição de método, quando clicar no teclado, executa a função
