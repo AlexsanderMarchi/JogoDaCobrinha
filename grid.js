@@ -80,7 +80,7 @@ function desenhaCauda(cauda, raio) {
 // função que cria a maçã verde.
 function desenhaMaca(xm, ym, raiom) {
 
-    pincel.fillStyle = 'green';
+    pincel.fillStyle = 'firebrick';
     pincel.beginPath();
     pincel.arc(xm, ym, raiom, 0, 2 * Math.PI);
     pincel.fill();
@@ -92,7 +92,7 @@ function limpaTela() {
     var descer = 0; 
     while(descer <=400){
         for(var imp= 0; imp<=400;imp=imp+25){
-            pincel.fillStyle = "lightblue";
+            pincel.fillStyle = "teal";
             pincel.beginPath();
             pincel.rect(imp, descer, 25, 25);
             pincel.closePath();
@@ -106,9 +106,15 @@ function limpaTela() {
 
 //Função para finalizar o jogo, e reiniciar do zero.
 function gameOver(){
+
+    if(pontos < 800){
     alert("Game Over");                 //Mensagem de game over.
+    }
+
     cauda = [[62.5,12.5],[] ,[] ];      //posição e tamanho inicial da cobra.
     sentidoAtual = direita;             //Sentido inicial da cobra sendo para a direita.
+    pontos = 0;                         //Pontuação inicial da cobra.
+    document.getElementById("pontos").innerHTML = "Pontuação: " + pontos;
 }
 
     // função para atualizar a tela, desenhando o grid e o objeto.
@@ -160,19 +166,20 @@ function gameOver(){
             if(pontos<100){
                 pontos+=10;
             }
-            if(pontos>=30 && pontos<300){
+            if(pontos>=100 && pontos<300){
                 pontos+=20;
             }
             if(pontos>=300 && pontos<800){
                 pontos+=50;
             }
-            if(pontos === 800){
-                alert("Você ganhou")
+            if(pontos >= 800){
+                alert("Você ganhou!")
+                gameOver();
             }
             xm = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
             ym = Math.floor(Math.random() * tabela);
 
-            document.getElementById("points").innerHTML = "Pontuação: " + points++;
+            document.getElementById("pontos").innerHTML = "Pontuação: " + pontos;
         }
        
         
@@ -211,12 +218,8 @@ var tela = document.querySelector('canvas');    // Váriavel que seleciona a tel
     var direita = 39
     var baixo = 40
 
-    var points = 10
 
-    
+ //função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
+setInterval(atualizaTela, 60);
 
-
-    // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
-    setInterval(atualizaTela, 60);
-
-   document.onkeydown = leDoTeclado; //atribuição de método, quando clicar no teclado, executa a função
+document.onkeydown = leDoTeclado; //atribuição de método, quando clicar no teclado, executa a função
