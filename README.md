@@ -1,2 +1,7 @@
 🐍 SnakeEyes 🐍
-Criar o famoso jogo da cobrinha, para a aula de Lógica de Programação.
+
+ ## Curiosidade: 
+ 
+  Foi desenvolvido o famoso jogo da cobrinha no SENAI de São José, no curso de Desenvolvimento de Sistema. Alunos: Alexsander Marchi Zunino, Gustavo Guglielmi e João Freitas.  
+
+   ##
